@@ -48,7 +48,7 @@ export default {
   subscriptions: {
     async setup({ dispatch, history }) {
       // 不获取个人信息
-      await dispatch({ type: 'getWxUser' });
+      // await dispatch({ type: 'getWxUser' });
       await weixin.init(false);
 
       return history.listen(async ({ pathname }) => {

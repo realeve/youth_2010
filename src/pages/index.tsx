@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { WhiteSpace, WingBlank } from 'antd-mobile';
+import { WingBlank } from 'antd-mobile';
 import styles from './index.less';
-import { connect } from 'dva';
 import { useInterval } from 'react-use';
 import QRCode from 'qrcode.react';
 import moment from 'moment';
@@ -13,7 +12,7 @@ export const getUrl = async () => {
   return `${protocol}//${host}/#checkin?timestamp=${timestamp()}`;
 };
 
-function NewPage({ dispatch }: any) {
+export default function NewPage() {
   // 扫码登录相关逻辑 start
   const [qrcode, setQrcode] = useState<string>('');
   const refreshUrl = async () => {
@@ -31,7 +30,7 @@ function NewPage({ dispatch }: any) {
     <div className={styles.content}>
       <WingBlank>
         <h2>
-          现场扫码签到<small>(已签到128人)</small>
+          1.现场扫码签到<small>(已签到128人)</small>
         </h2>
         <a href={qrcode}>{qrcode}</a>
         <div className={styles.qr}>
@@ -41,5 +40,3 @@ function NewPage({ dispatch }: any) {
     </div>
   );
 }
-
-export default connect(({ common }: any) => ({ ...common }))(NewPage);
