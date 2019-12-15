@@ -37,7 +37,7 @@ export default function ChartPage() {
     loadPaper();
   }, []);
 
-  useInterval(loadPaper, 8 * 1000);
+  useInterval(loadPaper, 5 * 1000);
 
   return (
     <div>

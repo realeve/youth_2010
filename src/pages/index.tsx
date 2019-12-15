@@ -24,7 +24,7 @@ export default function NewPage() {
     refreshUrl();
   }, []);
 
-  useInterval(refreshUrl, 10 * 1000);
+  useInterval(refreshUrl, 5 * 1000);
 
   return (
     <div className={styles.content}>
