@@ -6,7 +6,7 @@ import * as db from '@/utils/db.js';
 import { useInterval } from 'react-use';
 import QRCode from 'qrcode.react';
 
-export const getUrl = async () => {
+export const getUrl = () => {
   let { host, protocol, pathname } = window.location;
   return `${protocol}//${host}/${pathname}#paper`;
 };
@@ -70,14 +70,16 @@ export default function ChartPage() {
             </List>
           );
         })}
-
-        <List
-          // className={styles.qr}
-          renderHeader="用户投票二维码"
-          style={{ maxWidth: 300, width: '100%' }}
-        >
-          <QRCode size={300} value={qrcode} />
-        </List>
+        {/* {window.navigator.userAgent} */}
+        {!window.navigator.userAgent.includes('MicroMessenger') && (
+          <List
+            // className={styles.qr}
+            renderHeader="用户投票二维码"
+            style={{ maxWidth: 300, width: '100%' }}
+          >
+            <QRCode size={300} value={qrcode} />
+          </List>
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import styles from './index.less';
 
 import QRCode from 'qrcode.react';
 
-export const getUrl = async () => {
+export const getUrl = () => {
   let { host, protocol, pathname } = window.location;
   return `${protocol}//${host}/${pathname}#paper`;
 };
@@ -12,6 +12,7 @@ export const getUrl = async () => {
 export default function NewPage() {
   // 扫码登录相关逻辑 start
   const qrcode = getUrl();
+  console.log(qrcode);
 
   return (
     <div className={styles.content}>
