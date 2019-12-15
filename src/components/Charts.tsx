@@ -32,41 +32,41 @@ let color = [
   '#ffaa74',
 ];
 
-const getPie = (data, text) => ({
-  title: {
-    left: 'center',
-    text: R.splitEvery(20, text).join('\r\n'),
-    y: 10,
-  },
-  toolbox: { feature: { saveAsImage: { type: 'png' } } },
-  tooltip: {
-    trigger: 'item',
-    formatter: '{a} <br/>{b}: {c} ({d}%)',
-  },
-  color,
-  series: [
-    {
-      type: 'pie',
-      radius: ['40%', '55%'],
-      startAngle: 45,
-      data: data.filter(item => item.value > 0),
-      label: {
-        normal: {
-          formatter: function(param) {
-            return (
-              param.name.replace('(', '\n(') +
-              '\n(' +
-              param.percent.toFixed(2) +
-              '%)\n' +
-              param.value +
-              '人'
-            );
-          },
-        },
-      },
-    },
-  ],
-});
+// const getPie = (data, text) => ({
+//   title: {
+//     left: 'center',
+//     text: R.splitEvery(20, text).join('\r\n'),
+//     y: 10,
+//   },
+//   toolbox: { feature: { saveAsImage: { type: 'png' } } },
+//   tooltip: {
+//     trigger: 'item',
+//     formatter: '{a} <br/>{b}: {c} ({d}%)',
+//   },
+//   color,
+//   series: [
+//     {
+//       type: 'pie',
+//       radius: ['40%', '55%'],
+//       startAngle: 45,
+//       data: data.filter(item => item.value > 0),
+//       label: {
+//         normal: {
+//           // formatter: function(param) {
+//           //   return (
+//           //     param.name.replace('(', '\n(') +
+//           //     '\n(' +
+//           //     param.percent.toFixed(2) +
+//           //     '%)\n' +
+//           //     param.value +
+//           //     '分'
+//           //   );
+//           // },
+//         },
+//       },
+//     },
+//   ],
+// });
 
 const getBar = (data, text) => ({
   title: {
@@ -74,13 +74,15 @@ const getBar = (data, text) => ({
     text: R.splitEvery(20, text).join('\r\n'),
     y: 10,
   },
-  toolbox: { feature: { saveAsImage: { type: 'png' } } },
+  // toolbox: { feature: { saveAsImage: { type: 'png' } } },
   tooltip: {
     trigger: 'item',
   },
   grid: {
-    x: 350,
-    x2: 100,
+    x: 100,
+    x2: 50,
+    y: 10,
+    y2: 10,
   },
   xAxis: {
     type: 'value',
@@ -90,7 +92,7 @@ const getBar = (data, text) => ({
   },
   yAxis: {
     type: 'category',
-    data: data.map(item => R.splitEvery(25, item.name).join('\r\n')).reverse(),
+    data: data.map(item => R.splitEvery(25, item.name).join('\r\n')),
   },
   series: [
     {
@@ -99,11 +101,11 @@ const getBar = (data, text) => ({
         normal: {
           show: true,
           position: 'right',
-          formatter: a => `${a.value}%(${data[a.dataIndex].value}人)`,
+          // formatter: a => `${a.value}%(${data[a.dataIndex].value}分)`,
         },
       },
-      data: data.reverse(),
-      barMaxWidth: 20,
+      data,
+      barMaxWidth: 15,
     },
   ],
 });
@@ -112,11 +114,9 @@ export default function RCharts({ data: prevData, renderer = 'canvas', title, ty
   let echarts_react = useRef();
   let [option, setOption] = useState({});
   useEffect(() => {
-    let method = type === 'pie' ? getPie : getBar;
-
     let data = R.filter(item => item.name)(prevData);
 
-    let chartOption = method(data, title);
+    let chartOption = getBar(data, title);
 
     setOption(chartOption);
     return function cleanup() {
@@ -125,5 +125,6 @@ export default function RCharts({ data: prevData, renderer = 'canvas', title, ty
       }
     };
   }, [prevData]);
+
   return <ReactEcharts ref={echarts_react} option={option} {...props} opts={{ renderer }} />;
 }

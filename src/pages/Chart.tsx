@@ -1,68 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { List, Button, WingBlank } from 'antd-mobile';
-import paperData from '@/utils/questions';
+import { List } from 'antd-mobile';
 import styles from './paper.less';
-import { useChart, handleTickets } from '@/utils/usePaper';
-import * as R from 'ramda';
 import ReactCharts from '@/components/Charts';
+import * as db from '@/utils/db.js';
+import { useInterval } from 'react-use';
 
 export default function ChartPage() {
-  let src = useChart();
-  let [dist, setDist] = useState(src);
-  useEffect(() => {
-    setDist(src);
-  }, [src]);
-
-  let [state, setState] = useState([]);
-  useEffect(() => {
-    let res = handleTickets(dist);
-    setState(res);
-  }, [dist]);
-
   let [chartData, setChartData] = useState([]);
 
-  useEffect(() => {
-    let res = state.map((item, idx) => {
-      let sum = R.sum(item);
-      return item.map((value, i) => ({
-        name: paperData[idx].data[i],
-        value,
-        percent: (value * 100) / sum,
-      }));
+  const loadPaper = async () => {
+    let { data } = await db.getCbpcyouth2019CheckinVotes();
+    let dist = [
+      { title: '观众投票', data: [] },
+      { title: '评委投票', data: [] },
+      { title: '综合得分', data: [] },
+    ];
+    data.forEach(item => {
+      dist[0].data.push(item);
+      dist[1].data.push({
+        name: item.name,
+        value: item.score.toFixed(2),
+      });
+      dist[2].data.push({
+        name: item.name,
+        value: (Number(item.score) + Number(item.value)).toFixed(2),
+      });
     });
-    setChartData(res);
-  }, [state]);
+    dist = dist.map(item => {
+      item.data = item.data.sort((a, b) => Number(a.value) - Number(b.value));
+      return item;
+    });
+    setChartData(dist);
+  };
 
-  let [title, setTitle] = useState('综述');
+  useEffect(() => {
+    loadPaper();
+  }, []);
+
+  useInterval(loadPaper, 8 * 1000);
 
   return (
     <div>
-      <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>{title}</h3>
-      <WingBlank size="lg" className={styles.operators}>
-        <Button
-          className={styles.act}
-          size="small"
-          onClick={() => {
-            setTitle('综述');
-            setDist(src);
-          }}
-          type={title === '综述' ? 'primary' : 'ghost'}
-        >
-          综述
-        </Button>
-        {/* <Button
-          className={styles.act}
-          size="small"
-          onClick={() => {
-            setTitle('中高层管理人员');
-            let res = R.filter(item => ['0', '1'].includes(item.vote_detail[5]))(src);
-            setDist(res);
-          }}
-          type={title === '中高层管理人员' ? 'primary' : 'ghost'}
-        >
-          中高层管理人员
-        </Button> */}
-      </WingBlank>
+      {/* <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>得分汇总</h3> */}
+
       <div
         className={styles.content}
         style={{
@@ -72,25 +52,14 @@ export default function ChartPage() {
           justifyContent: 'center',
         }}
       >
-        {paperData.map(({ type, title }, idx) => {
-          if (type === 'textarea') {
-            return null;
-          }
-          let isBar = idx => chartData[idx].length > 8;
+        {chartData.map((item, idx) => {
           return (
             <List
-              renderHeader={`${idx + 1}.${title}`}
+              renderHeader={`${idx + 1}.${item.title}`}
               key={idx}
-              style={{ maxWidth: 800, width: '100%' }}
+              style={{ maxWidth: 500, width: '100%' }}
             >
-              {chartData[idx] && (
-                <ReactCharts
-                  data={chartData[idx]}
-                  style={{ height: isBar(idx) ? 600 : 400 }}
-                  type={isBar(idx) ? 'bar' : 'pie'}
-                  title={title}
-                />
-              )}
+              <ReactCharts data={item.data} style={{ height: 150 }} type="bar" title="" />
             </List>
           );
         })}

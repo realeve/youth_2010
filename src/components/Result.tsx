@@ -1,6 +1,5 @@
 import React from 'react';
-import { Result, Icon, WingBlank } from 'antd-mobile';
-import router from 'umi/router';
+import { Result, Icon } from 'antd-mobile';
 import waitingIcon from './waiting.svg';
 
 export default function ResultComponent({
@@ -33,6 +32,5 @@ export default function ResultComponent({
   } else if (status === 'waiting') {
     img = <img src={waitingIcon} className="am-result-pic" alt="" />;
   }
-  console.log(extra);
   return <Result img={img} title={title} message={message + extra} />;
 }

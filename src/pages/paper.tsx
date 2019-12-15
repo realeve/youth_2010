@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Button, WhiteSpace, WingBlank, Toast } from 'antd-mobile';
 import styles from './paper.less';
-import { paperData } from '@/utils/questions';
 import { connect } from 'dva';
 import FormComponent from '@/components/FormComponent';
-import router from 'umi/router';
 import * as db from '@/utils/db';
-import * as lib from '@/utils/lib';
 import * as userLib from '@/utils/user';
 import * as R from 'ramda';
 
-function NewPage({ paper: initData, logInfo, dispatch }: any) {
-  const [state, setState] = useState(paperData.map(item => ''));
+function NewPage({ paper: initData, user, dispatch }: any) {
+  const [state, setState] = useState(['']);
 
   const [loading, setLoading] = useState(false);
   const [showErr, setShowErr] = useState(initData.length === 0 ? {} : { msg: '' });
 
-  const [paper, setPaper] = useState(paperData);
+  const [paper, setPaper] = useState([]);
+  useEffect(() => {
+    db.getCbpcyouth2019Votelist().then(({ data }) => {
+      let res = R.flatten(data);
+      setPaper([
+        {
+          title: '请选择您支持的战队:',
+          data,
+        },
+      ]);
+    });
+  }, []);
 
   const onSubmmit = async () => {
     if (loading) {
@@ -33,24 +41,15 @@ function NewPage({ paper: initData, logInfo, dispatch }: any) {
     }
 
     let param = {};
-    R.clone(state).forEach((item, idx) => {
-      param['q_' + idx] = item
-        .trim()
-        .replace(/\\r/g, '')
-        .replace(/\\n/g, '');
-    });
 
-    param.uid = logInfo.uid;
-    param.rec_time = lib.now();
-
-    Toast.success('模拟数据提交');
-
-    db.addCbpcVote201910(param)
+    param.user = user.user;
+    param.vote = state[0];
+    db.setCbpcyouth2019Checkin(param)
       .then(res => {
         userLib.gotoSuccess();
       })
       .catch(e => {
-        Toast.fail('提交失败,请勿重复作答');
+        Toast.fail('提交失败,请勿重复投票');
       });
   };
 
@@ -61,16 +60,13 @@ function NewPage({ paper: initData, logInfo, dispatch }: any) {
         <WhiteSpace size="lg" />
       </div>
       <WingBlank>
-        <Button type="primary" onClick={onSubmmit} loading={loading} disabled={loading}>
-          提交
-        </Button>
         <Button
-          style={{ marginTop: 20 }}
-          onClick={() => {
-            router.push('/');
-          }}
+          type="primary"
+          onClick={onSubmmit}
+          loading={loading}
+          disabled={loading || state[0].length === 0}
         >
-          返回主页
+          提交
         </Button>
       </WingBlank>
     </div>

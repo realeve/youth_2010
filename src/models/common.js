@@ -1,7 +1,6 @@
 import { setStore } from '@/utils/lib';
 import weixin from '@/utils/WeiXin';
 import * as users from '@/utils/user';
-import router from 'umi/router';
 
 const namespace = 'common';
 export default {
@@ -52,16 +51,13 @@ export default {
       await weixin.init(false);
 
       return history.listen(async ({ pathname }) => {
-        // if (!['/result', '/export', '/chart', '/log', '/paper', '/new'].includes(pathname)) {
-        //   await weixin.init();
-        // }
-        if (!['/index', '/score', '/userscore'].includes(pathname)) {
-          let res = users.loadLoginfo();
+        if (!['/index', '/chart'].includes(pathname)) {
+          let user = users.getUid();
 
           dispatch({
             type: 'setStore',
             payload: {
-              logInfo: res,
+              user,
             },
           });
         }
