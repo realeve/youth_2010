@@ -89,8 +89,8 @@ export default function FormComponent({
                 nextState[key] = res.trim();
                 prop.onChange(nextState);
               }}
-              rows={3}
-              placeholder="请在此输入"
+              rows={1}
+              placeholder="请在此输入得分"
               clear={true}
             />
           </List>

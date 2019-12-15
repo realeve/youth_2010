@@ -46,3 +46,14 @@ export const getCbpcyouth2019CheckinVotes = () =>
   axios({
     url: '/220/a93dec6422.json',
   });
+
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 更新评委打分 } 
+    const { score_0, score_1, score_2, score_3, score_4, score_5 } = params;
+*/
+export const setCbpcyouth2019Votelist = params =>
+  axios({
+    url: '/221/c35b24cae1.json',
+    params,
+  });
