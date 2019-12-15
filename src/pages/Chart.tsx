@@ -4,9 +4,16 @@ import styles from './paper.less';
 import ReactCharts from '@/components/Charts';
 import * as db from '@/utils/db.js';
 import { useInterval } from 'react-use';
+import QRCode from 'qrcode.react';
+
+export const getUrl = async () => {
+  let { host, protocol } = window.location;
+  return `${protocol}//${host}/#paper`;
+};
 
 export default function ChartPage() {
   let [chartData, setChartData] = useState([]);
+  const qrcode = getUrl();
 
   const loadPaper = async () => {
     let { data } = await db.getCbpcyouth2019CheckinVotes();
@@ -63,6 +70,14 @@ export default function ChartPage() {
             </List>
           );
         })}
+
+        <List
+          // className={styles.qr}
+          renderHeader="用户投票二维码"
+          style={{ maxWidth: 300, width: '100%' }}
+        >
+          <QRCode size={300} value={qrcode} />
+        </List>
       </div>
     </div>
   );
