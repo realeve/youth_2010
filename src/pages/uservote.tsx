@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { WingBlank } from 'antd-mobile';
 import styles from './index.less';
 
 import QRCode from 'qrcode.react';
 
 export const getUrl = async () => {
-  let { host, protocol } = window.location;
-  return `${protocol}//${host}/#paper`;
+  let { host, protocol, pathname } = window.location;
+  return `${protocol}//${host}/${pathname}#paper`;
 };
 
 export default function NewPage() {
@@ -18,7 +18,7 @@ export default function NewPage() {
       <WingBlank>
         <h2>2.用户投票</h2>
         <div className={styles.qr}>
-          <QRCode size={600} value={qrcode} />
+          <QRCode size={400} value={qrcode} />
         </div>
         <div>
           <a href="#">签到</a>

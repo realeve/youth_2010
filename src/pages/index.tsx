@@ -9,8 +9,8 @@ import * as db from '@/utils/db';
 export const timestamp = () => moment().format('x');
 
 export const getUrl = async () => {
-  let { host, protocol } = window.location;
-  return `${protocol}//${host}/#checkin?timestamp=${timestamp()}`;
+  let { host, protocol, pathname } = window.location;
+  return `${protocol}//${host}/${pathname}#checkin?timestamp=${timestamp()}`;
 };
 
 export default function NewPage() {
@@ -41,7 +41,7 @@ export default function NewPage() {
         <p style={{ textAlign: 'center' }}>未签到者不允许投票</p>
         {/* <a href={qrcode}>{qrcode}</a> */}
         <div className={styles.qr}>
-          <QRCode size={600} value={qrcode} />
+          <QRCode size={400} value={qrcode} />
         </div>
         <div>
           <a href="#">签到</a>

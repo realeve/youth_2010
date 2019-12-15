@@ -7,8 +7,8 @@ import { useInterval } from 'react-use';
 import QRCode from 'qrcode.react';
 
 export const getUrl = async () => {
-  let { host, protocol } = window.location;
-  return `${protocol}//${host}/#paper`;
+  let { host, protocol, pathname } = window.location;
+  return `${protocol}//${host}/${pathname}#paper`;
 };
 
 export default function ChartPage() {
