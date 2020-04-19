@@ -4,7 +4,6 @@ import styles from './index.less';
 import { useInterval } from 'react-use';
 import QRCode from 'qrcode.react';
 import moment from 'moment';
-import * as db from '@/utils/db';
 import md5 from 'md5';
 
 export const timestamp = () => moment().format('x');

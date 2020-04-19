@@ -57,3 +57,23 @@ export const setCbpcyouth2019Votelist = params =>
     url: '/221/c35b24cae1.json',
     params,
   });
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 今日参与人员情况 }
+ */
+export const getCbpcSport2020 = () =>
+  axios({
+    url: '/305/659c64cd6f.array',
+  });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 各部门平均得分 }
+ */
+export const getCbpcSport2020Score = sid =>
+  axios({
+    url: '/306/3e258eaab9.json',
+    params: {
+      sid,
+    },
+  });

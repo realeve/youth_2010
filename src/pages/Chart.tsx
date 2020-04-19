@@ -1,48 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import { List } from 'antd-mobile';
+import { List, Button, WingBlank, WhiteSpace } from 'antd-mobile';
 import styles from './paper.less';
-import ReactCharts from '@/components/Charts';
 import * as db from '@/utils/db.js';
+import * as lib from '@/utils/lib';
+import Excel from '@/utils/excel';
+import Chart from '@/components/Charts';
+
 export const getUrl = () => {
   let { host, protocol, pathname } = window.location;
   return `${protocol}//${host}/${pathname}#paper`;
 };
 
 export default function ChartPage() {
-  let [chartData, setChartData] = useState([]);
+  let [chartData, setChartData] = useState({});
 
   const loadPaper = async () => {
-    let { data } = await db.getCbpcyouth2019CheckinVotes();
-    let dist = [
-      { title: '观众投票', data: [] },
-      { title: '评委投票', data: [] },
-      { title: '综合得分', data: [] },
-    ];
-    data.forEach(item => {
-      dist[0].data.push(item);
-      dist[1].data.push({
-        name: item.name,
-        value: item.score.toFixed(2),
-      });
-      dist[2].data.push({
-        name: item.name,
-        value: (Number(item.score) + Number(item.value)).toFixed(2),
-      });
-    });
-    dist = dist.map(item => {
-      item.data = item.data.sort((a, b) => Number(a.value) - Number(b.value));
-      return item;
-    });
-    setChartData(dist);
+    let data = await db.getCbpcSport2020();
+    setChartData(data);
   };
 
   useEffect(() => {
     loadPaper();
   }, []);
 
+  const exportExcel = () => {
+    if (!chartData) {
+      return;
+    }
+    let excel = new Excel({
+      header: chartData.header,
+      body: chartData.data,
+      filename: '安全答题得分明细' + lib.ymd(),
+    });
+    excel.save();
+  };
+
+  const [score, setScore] = useState(null);
+  useEffect(() => {
+    db.getCbpcSport2020Score(34).then(res => {
+      setScore(res);
+    });
+  }, []);
+
+  // console.log(score);
+
   return (
     <div>
-      {/* <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>得分汇总</h3> */}
+      {chartData && (
+        <>
+          <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>
+            {chartData.title}
+          </h3>
+          <WingBlank style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button onClick={exportExcel} style={{ width: 150 }} type="primary">
+              导出今日数据
+            </Button>
+          </WingBlank>
+        </>
+      )}
+
+      <WhiteSpace />
 
       <div
         className={styles.content}
@@ -53,17 +70,54 @@ export default function ChartPage() {
           justifyContent: 'center',
         }}
       >
-        {chartData.map((item, idx) => {
-          return (
-            <List
-              renderHeader={`${idx + 1}.${item.title}`}
-              key={idx}
-              style={{ maxWidth: 500, width: '100%' }}
-            >
-              <ReactCharts data={item.data} style={{ height: 150 }} type="bar" title="" />
-            </List>
-          );
-        })}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: 820,
+          }}
+        >
+          <List
+            style={{ maxWidth: 400, marginRight: 20, width: '100%' }}
+            renderHeader="各部门平均得分"
+          >
+            {score && <Chart data={score.data} style={{ height: 950 }} type="bar" title="" />}
+          </List>
+          {/* <List style={{ maxWidth: 400, width: '100%' }} renderHeader="各部门平均得分">
+            {score && <Chart data={score.data} style={{ height: 950 }} type="bar" title="" />}
+          </List> */}
+        </div>
+
+        <List renderHeader="今日得分明细" style={{ maxWidth: 800, width: '100%' }}>
+          <List.Item>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>#</span>
+              {(chartData.header || []).map((item, idx) => (
+                <span key={item} style={{ width: idx > 2 ? 180 : 100 }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </List.Item>
+          {(chartData.data || []).map((item, idx) => (
+            <List.Item key={idx}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>{idx + 1}</span>
+                {item.map((td, i) => (
+                  <span
+                    key={td}
+                    style={{
+                      width: i > 2 ? 180 : 100,
+                      color: i == 2 && td < 90 ? '#e23' : 'unset',
+                    }}
+                  >
+                    {td}
+                  </span>
+                ))}
+              </div>
+            </List.Item>
+          ))}
+        </List>
       </div>
     </div>
   );
