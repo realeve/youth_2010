@@ -3,9 +3,6 @@ import { List } from 'antd-mobile';
 import styles from './paper.less';
 import ReactCharts from '@/components/Charts';
 import * as db from '@/utils/db.js';
-import { useInterval } from 'react-use';
-import QRCode from 'qrcode.react';
-
 export const getUrl = () => {
   let { host, protocol, pathname } = window.location;
   return `${protocol}//${host}/${pathname}#paper`;
@@ -13,7 +10,6 @@ export const getUrl = () => {
 
 export default function ChartPage() {
   let [chartData, setChartData] = useState([]);
-  const qrcode = getUrl();
 
   const loadPaper = async () => {
     let { data } = await db.getCbpcyouth2019CheckinVotes();
@@ -44,8 +40,6 @@ export default function ChartPage() {
     loadPaper();
   }, []);
 
-  useInterval(loadPaper, 5 * 1000);
-
   return (
     <div>
       {/* <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>得分汇总</h3> */}
@@ -70,16 +64,6 @@ export default function ChartPage() {
             </List>
           );
         })}
-        {/* {window.navigator.userAgent} */}
-        {!window.navigator.userAgent.includes('MicroMessenger') && (
-          <List
-            // className={styles.qr}
-            renderHeader="用户投票二维码"
-            style={{ maxWidth: 300, width: '100%' }}
-          >
-            <QRCode size={300} value={qrcode} />
-          </List>
-        )}
       </div>
     </div>
   );
