@@ -77,3 +77,13 @@ export const getCbpcSport2020Score = sid =>
       sid,
     },
   });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 不同场次交卷情况及得分汇总 }
+ */
+export const getCbpcSport2020Summary = sid =>
+  axios({
+    url: '/307/9772686879.array',
+    params: { sid },
+  });

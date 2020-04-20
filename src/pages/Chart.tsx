@@ -36,9 +36,13 @@ export default function ChartPage() {
   };
 
   const [score, setScore] = useState(null);
+  const [passed, setPassed] = useState(null);
   useEffect(() => {
     db.getCbpcSport2020Score(34).then(res => {
       setScore(res);
+    });
+    db.getCbpcSport2020Summary(34).then(res => {
+      setPassed(res);
     });
   }, []);
 
@@ -50,6 +54,9 @@ export default function ChartPage() {
         <>
           <h3 style={{ textAlign: 'center', fontWeight: 'normal', letterSpace: '.5em' }}>
             {chartData.title}
+            <br />
+            (参与人数:{chartData.rows}; 通过人数：
+            {(chartData.data || []).filter(item => item[2] >= 90).length})
           </h3>
           <WingBlank style={{ display: 'flex', justifyContent: 'center' }}>
             <Button onClick={exportExcel} style={{ width: 150 }} type="primary">
@@ -61,6 +68,35 @@ export default function ChartPage() {
 
       <WhiteSpace />
 
+      {passed && (
+        <List
+          renderHeader="今日得分汇总"
+          style={{ maxWidth: 800, width: '100%', margin: '10px auto' }}
+        >
+          <List.Item>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              {(passed.header || []).map((item, idx) => (
+                <span style={{ width: 160 }} key={item}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </List.Item>
+          {(passed.data || []).map((item, idx) => (
+            <List.Item key={idx}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                {item.map((td, i) => (
+                  <span style={{ width: 160 }} key={td}>
+                    {td}
+                  </span>
+                ))}
+              </div>
+            </List.Item>
+          ))}
+        </List>
+      )}
+
+      <WhiteSpace />
       <div
         className={styles.content}
         style={{
