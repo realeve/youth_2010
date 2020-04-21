@@ -87,3 +87,15 @@ export const getCbpcSport2020Summary = sid =>
     url: '/307/9772686879.array',
     params: { sid },
   });
+
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 部门通过率排名 }
+ */
+export const getCbpcSport2020Passrate = (sid) =>
+  axios({
+    url: "/309/e3dcf29f4b.json",
+    params: {
+      sid,
+    },
+  });

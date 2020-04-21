@@ -37,13 +37,11 @@ export default function ChartPage() {
 
   const [score, setScore] = useState(null);
   const [passed, setPassed] = useState(null);
+  const [rate, setRate] = useState(null);
   useEffect(() => {
-    db.getCbpcSport2020Score(34).then(res => {
-      setScore(res);
-    });
-    db.getCbpcSport2020Summary(34).then(res => {
-      setPassed(res);
-    });
+    db.getCbpcSport2020Score(34).then(setScore);
+    db.getCbpcSport2020Summary(34).then(setPassed);
+    db.getCbpcSport2020Passrate(34).then(setRate);
   }, []);
 
   // console.log(score);
@@ -115,9 +113,15 @@ export default function ChartPage() {
         >
           <List
             style={{ maxWidth: 400, marginRight: 20, width: '100%' }}
-            renderHeader="各部门平均得分"
+            renderHeader="各部门平均得分(分)"
           >
             {score && <Chart data={score.data} style={{ height: 950 }} type="bar" title="" />}
+          </List>
+          <List
+            style={{ maxWidth: 400, marginRight: 20, width: '100%' }}
+            renderHeader="各部门通过率(%)"
+          >
+            {rate && <Chart data={rate.data} style={{ height: 950 }} type="bar" title="" />}
           </List>
           {/* <List style={{ maxWidth: 400, width: '100%' }} renderHeader="各部门平均得分">
             {score && <Chart data={score.data} style={{ height: 950 }} type="bar" title="" />}

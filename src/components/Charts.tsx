@@ -79,7 +79,7 @@ const getBar = (data, text) => ({
     trigger: 'item',
   },
   grid: {
-    x: 120,
+    x: 180,
     x2: 50,
     y: 10,
     y2: 10,
