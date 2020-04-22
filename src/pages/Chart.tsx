@@ -23,14 +23,14 @@ export default function ChartPage() {
     loadPaper();
   }, []);
 
-  const exportExcel = () => {
-    if (!chartData) {
+  const exportExcel = (data, title = '安全答题得分明细 ') => {
+    if (!data) {
       return;
     }
     let excel = new Excel({
-      header: chartData.header,
-      body: chartData.data,
-      filename: '安全答题得分明细' + lib.ymd(),
+      header: data.header,
+      body: data.data,
+      filename: title + lib.ymdhms(),
     });
     excel.save();
   };
@@ -38,10 +38,12 @@ export default function ChartPage() {
   const [score, setScore] = useState(null);
   const [passed, setPassed] = useState(null);
   const [rate, setRate] = useState(null);
+  const [uncomplete, setUncomplete] = useState(null);
   useEffect(() => {
     db.getCbpcSport2020Score(34).then(setScore);
     db.getCbpcSport2020Summary(34).then(setPassed);
     db.getCbpcSport2020Passrate(34).then(setRate);
+    db.getCbpcSport2020Uncomplete(34).then(setUncomplete);
   }, []);
 
   // console.log(score);
@@ -57,10 +59,25 @@ export default function ChartPage() {
             {(chartData.data || []).filter(item => item[2] >= 90).length})
           </h3>
           <WingBlank style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={exportExcel} style={{ width: 150 }} type="primary">
+            <Button
+              onClick={() => exportExcel(chartData, '安全得分明细 ')}
+              style={{ width: 150 }}
+              type="primary"
+            >
               导出今日数据
             </Button>
           </WingBlank>
+          {uncomplete && (
+            <WingBlank style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                onClick={() => exportExcel(uncomplete, '未参与人员名单 ')}
+                style={{ width: 250 }}
+                type="primary"
+              >
+                导出未参与人员数据({uncomplete.rows}人)
+              </Button>
+            </WingBlank>
+          )}
         </>
       )}
 

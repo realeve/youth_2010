@@ -92,9 +92,20 @@ export const getCbpcSport2020Summary = sid =>
  *   @database: { 微信开发 }
  *   @desc:     { 部门通过率排名 }
  */
-export const getCbpcSport2020Passrate = (sid) =>
+export const getCbpcSport2020Passrate = sid =>
   axios({
-    url: "/309/e3dcf29f4b.json",
+    url: '/309/e3dcf29f4b.json',
+    params: {
+      sid,
+    },
+  });
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 未答题人员名单 }
+ */
+export const getCbpcSport2020Uncomplete = sid =>
+  axios({
+    url: '/310/de06f2076e.array',
     params: {
       sid,
     },
