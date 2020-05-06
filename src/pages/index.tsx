@@ -44,7 +44,7 @@ export default function NewPage() {
           <QRCode size={400} value={qrcode} />
         </div>
         <div>
-          <a href="#">签到</a>
+          {/* <a href="#">签到</a> */}
           <a href="#uservote" style={{ marginLeft: 20, marginRight: 20 }}>
             用户投票二维码
           </a>

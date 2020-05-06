@@ -17,12 +17,12 @@ export default function NewPage() {
   return (
     <div className={styles.content}>
       <WingBlank>
-        <h2>2.用户投票</h2>
+        <h2>“牢记青春使命”微团课比赛</h2>
         <div className={styles.qr}>
           <QRCode size={400} value={qrcode} />
         </div>
         <div>
-          <a href="#">签到</a>
+          {/* <a href="#">签到</a> */}
           <a href="#uservote" style={{ marginLeft: 20, marginRight: 20 }}>
             用户投票二维码
           </a>
