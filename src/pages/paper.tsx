@@ -6,6 +6,7 @@ import FormComponent from '@/components/FormComponent';
 import * as db from '@/utils/db';
 import * as userLib from '@/utils/user';
 import * as R from 'ramda';
+import md5 from 'md5';
 
 function NewPage({ paper: initData, user, dispatch }: any) {
   const [state, setState] = useState(['']);
