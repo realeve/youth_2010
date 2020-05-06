@@ -57,3 +57,13 @@ export const setCbpcyouth2019Votelist = params =>
     url: '/221/c35b24cae1.json',
     params,
   });
+/**
+*   @database: { 微信开发 }
+*   @desc:     { 投票 } 
+    const { user, timestamp, rec_time, vote } = params;
+*/
+export const addCbpcyouth2019CheckinLog = params =>
+  axios({
+    url: '/325/3872fa8ba3.json',
+    params,
+  });

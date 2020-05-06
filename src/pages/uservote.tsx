@@ -46,7 +46,9 @@ export default function NewPage() {
         <h2>“牢记青春使命”微团课比赛</h2>
         <div className={styles.qr}>
           <QRCode size={400} value={qrcode} />
-          <a href={qrcode}>{qrcode}</a>
+          <a href={qrcode} target="_blank">
+            测试入口
+          </a>
         </div>
         <div>
           {/* <a href="#">签到</a> */}
@@ -54,6 +56,9 @@ export default function NewPage() {
             用户投票二维码
           </a> */}
           <a href="#chart">用户投票结果</a>
+          <a href="#vote" style={{ marginLeft: 20 }}>
+            领导评分录入
+          </a>
         </div>
       </WingBlank>
     </div>

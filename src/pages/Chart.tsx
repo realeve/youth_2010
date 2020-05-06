@@ -4,16 +4,16 @@ import styles from './paper.less';
 import ReactCharts from '@/components/Charts';
 import * as db from '@/utils/db.js';
 import { useInterval } from 'react-use';
-import QRCode from 'qrcode.react';
+// import QRCode from 'qrcode.react';
 
-export const getUrl = () => {
-  let { host, protocol, pathname } = window.location;
-  return `${protocol}//${host}/${pathname}#paper`;
-};
+// export const getUrl = () => {
+//   let { host, protocol, pathname } = window.location;
+//   return `${protocol}//${host}/${pathname}#paper`;
+// };
 
 export default function ChartPage() {
   let [chartData, setChartData] = useState([]);
-  const qrcode = getUrl();
+  // const qrcode = getUrl();
 
   const loadPaper = async () => {
     let { data } = await db.getCbpcyouth2019CheckinVotes();
@@ -22,6 +22,14 @@ export default function ChartPage() {
       { title: '评委投票', data: [] },
       { title: '综合得分', data: [] },
     ];
+    let maxScore = 0;
+
+    data.forEach(item => {
+      if (item.value > maxScore) {
+        maxScore = item.value;
+      }
+    });
+
     data.forEach(item => {
       dist[0].data.push(item);
       dist[1].data.push({
@@ -30,7 +38,10 @@ export default function ChartPage() {
       });
       dist[2].data.push({
         name: item.name,
-        value: (Number(item.score) + Number(item.value)).toFixed(2),
+        value:
+          maxScore > 0
+            ? (Number(item.score) * 0.6 + (Number(item.value) / maxScore) * 40).toFixed(2)
+            : Number(item.score) * 0.6,
       });
     });
     dist = dist.map(item => {
@@ -71,7 +82,7 @@ export default function ChartPage() {
           );
         })}
         {/* {window.navigator.userAgent} */}
-        {!window.navigator.userAgent.includes('MicroMessenger') && (
+        {/* {!window.navigator.userAgent.includes('MicroMessenger') && (
           <List
             // className={styles.qr}
             renderHeader="用户投票二维码"
@@ -79,7 +90,7 @@ export default function ChartPage() {
           >
             <QRCode size={300} value={qrcode} />
           </List>
-        )}
+        )} */}
       </div>
     </div>
   );
