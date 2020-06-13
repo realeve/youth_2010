@@ -1,5 +1,5 @@
 import { axios, _commonData } from './axios';
-
+import * as R from 'ramda';
 /**
 *   @database: { 微信开发 }
 *   @desc:     { 团委-签到 } 
@@ -110,3 +110,15 @@ export const getCbpcSport2020Uncomplete = sid =>
       sid,
     },
   });
+/**
+ *   @database: { 微信开发 }
+ *   @desc:     { 部门列表 }
+ */
+export const getCbpcDeptList = (sid = 36) =>
+  axios({
+    url: '/273/49aff5c500/array.json',
+    params: {
+      sid,
+      cache: 7200,
+    },
+  }).then(res => R.flatten(res.data));

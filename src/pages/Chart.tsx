@@ -40,10 +40,10 @@ export default function ChartPage() {
   const [rate, setRate] = useState(null);
   const [uncomplete, setUncomplete] = useState(null);
   useEffect(() => {
-    db.getCbpcSport2020Score(34).then(setScore);
-    db.getCbpcSport2020Summary(34).then(setPassed);
-    db.getCbpcSport2020Passrate(34).then(setRate);
-    db.getCbpcSport2020Uncomplete(34).then(setUncomplete);
+    db.getCbpcSport2020Score(38).then(setScore);
+    db.getCbpcSport2020Summary(38).then(setPassed);
+    db.getCbpcSport2020Passrate(38).then(setRate);
+    db.getCbpcSport2020Uncomplete(38).then(setUncomplete);
   }, []);
 
   // console.log(score);
@@ -56,7 +56,7 @@ export default function ChartPage() {
             {chartData.title}
             <br />
             (参与人数:{chartData.rows}; 通过人数：
-            {(chartData.data || []).filter(item => item[2] >= 90).length})
+            {(chartData.data || []).filter(item => item[2] >= 80).length})
           </h3>
           <WingBlank style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
@@ -165,7 +165,7 @@ export default function ChartPage() {
                     key={td}
                     style={{
                       width: i > 2 ? 180 : 100,
-                      color: i == 2 && td < 90 ? '#e23' : 'unset',
+                      color: i == 2 && td < 80 ? '#e23' : 'unset',
                     }}
                   >
                     {td}

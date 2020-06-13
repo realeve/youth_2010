@@ -23,7 +23,7 @@ const config: IConfig = {
       {
         dva: true,
         dynamicImport: { webpackChunkName: true },
-        title: '2020年全员安全履职能力闭卷测试',
+        title: '“学规章、守纪律，严管理、促养成”专题教育考试',
         dll: false,
         routes: {
           exclude: [
