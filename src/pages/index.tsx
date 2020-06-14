@@ -101,7 +101,7 @@ export default function NewPage() {
           <div
             onClick={() => {
               new Dom2pic({
-                root: document.querySelector(`.img${idx}-0`),
+                root: document.querySelector(`.img${idx}-1`),
                 backgroundColor: '#fff',
               })
                 .toPng()
