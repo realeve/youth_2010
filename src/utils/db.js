@@ -121,4 +121,11 @@ export const getCbpcDeptList = (sid = 36) =>
       sid,
       cache: 7200,
     },
-  }).then(res => R.flatten(res.data));
+  }).then(res =>
+    R.flatten(res.data).map((item, i) => {
+      if (i == 0) {
+        return '公司领导/办公室/组织部/纪检办/宣传部/群工部';
+      }
+      return item;
+    }),
+  );
