@@ -79,7 +79,7 @@ const getBar = (data, text) => ({
     trigger: 'item',
   },
   grid: {
-    x: 150,
+    x: 250,
     x2: 50,
     y: 10,
     y2: 10,
@@ -92,7 +92,7 @@ const getBar = (data, text) => ({
   },
   yAxis: {
     type: 'category',
-    data: data.map(item => R.splitEvery(25, item.name).join('\r\n')),
+    data: data.map(item => R.splitEvery(18, item.name).join('\r\n')),
   },
   series: [
     {

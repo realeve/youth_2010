@@ -12,6 +12,7 @@ import { useSetState } from 'react-use';
 import moment from 'moment';
 import Result from '@/components/Result';
 
+const DEV = true;
 function NewPage({ paper: initData, user, dispatch }: any) {
   const [state, setState] = useState(['']);
 
@@ -27,6 +28,9 @@ function NewPage({ paper: initData, user, dispatch }: any) {
   });
 
   useEffect(() => {
+    if (DEV) {
+      return;
+    }
     let hashArr = window.location.hash.split('?');
     let params = qs.parse(hashArr[1] || '');
     if (hashArr.length < 2) {
@@ -72,14 +76,22 @@ function NewPage({ paper: initData, user, dispatch }: any) {
     }
   }, []);
 
+  const radioItemRender = item => (
+    <div>
+      <strong>{item[1]}</strong>
+      <br />
+      <small>{item[0]}</small>
+    </div>
+  );
+
   const [paper, setPaper] = useState([]);
   useEffect(() => {
     db.getCbpcyouth2019Votelist().then(({ data }) => {
-      let res = R.flatten(data);
       setPaper([
         {
           title: '请选择您支持的战队:',
           data,
+          render: radioItemRender,
         },
       ]);
     });

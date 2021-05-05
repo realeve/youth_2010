@@ -32,7 +32,7 @@ const CheckboxComponent = function({
           checked={state[key] && state[key].includes(String(value))}
           onChange={() => onMultipleChange(value, key)}
         >
-          {lib.alphaRange[value]}、{name}
+          {lib.alphaRange[value]}、<div dangerouslySetInnerHTML={{ __html: name }}></div>
         </CheckboxItem>
       ))}
     </List>

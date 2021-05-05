@@ -35,7 +35,8 @@ const RadioComponent = function({
           checked={String(value) === state[key]}
           onChange={() => onRadioChange(value, key)}
         >
-          {lib.alphaRange[value]}、{render(name)}
+          {/* {lib.alphaRange[value]}、 */}
+          {render(name)}
         </RadioItem>
       ))}
     </List>

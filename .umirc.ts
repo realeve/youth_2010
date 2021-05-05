@@ -23,7 +23,7 @@ const config: IConfig = {
       {
         dva: true,
         dynamicImport: { webpackChunkName: true },
-        title: '“牢记青春使命”微团课比赛',
+        title: '“与信仰对话”青年朗读者比赛',
         dll: false,
         routes: {
           exclude: [

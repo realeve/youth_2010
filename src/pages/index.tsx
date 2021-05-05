@@ -39,7 +39,7 @@ export default function NewPage() {
           1.现场扫码签到<small>(已签到{num}人)</small>
         </h2>
         <p style={{ textAlign: 'center' }}>未签到者不允许投票</p>
-        {/* <a href={qrcode}>{qrcode}</a> */}
+        <a href={qrcode}>{qrcode}</a>
         <div className={styles.qr}>
           <QRCode size={400} value={qrcode} />
         </div>

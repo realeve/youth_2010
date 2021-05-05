@@ -36,6 +36,7 @@ export default function FormComponent({
       sort: props.sort,
       maxLength: props.maxLength,
       showErr: !R.equals(showErr, {}),
+      render: props.render,
     };
 
     switch (type) {

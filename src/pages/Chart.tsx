@@ -77,7 +77,7 @@ export default function ChartPage() {
               key={idx}
               style={{ maxWidth: 500, width: '100%' }}
             >
-              <ReactCharts data={item.data} style={{ height: 150 }} type="bar" title="" />
+              <ReactCharts data={item.data} style={{ height: 260 }} type="bar" title="" />
             </List>
           );
         })}
