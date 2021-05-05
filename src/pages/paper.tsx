@@ -76,9 +76,9 @@ function NewPage({ paper: initData, user, dispatch }: any) {
     }
   }, []);
 
-  const radioItemRender = item => (
+  const radioItemRender = (item, idx) => (
     <div>
-      <strong>{item[1]}</strong>
+      {idx + 1}. <strong>{item[1]}</strong>
       <br />
       <small>{item[0]}</small>
     </div>
@@ -137,7 +137,13 @@ function NewPage({ paper: initData, user, dispatch }: any) {
   return (
     <div>
       <div className={styles.content}>
-        <FormComponent data={paper} onChange={setState} state={state} showErr={showErr} />
+        <FormComponent
+          data={paper}
+          onChange={setState}
+          state={state}
+          showErr={showErr}
+          showKey={false}
+        />
         <WhiteSpace size="lg" />
       </div>
       <WingBlank>

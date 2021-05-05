@@ -36,7 +36,7 @@ const RadioComponent = function({
           onChange={() => onRadioChange(value, key)}
         >
           {/* {lib.alphaRange[value]}、 */}
-          {render(name)}
+          {render(name, value)}
         </RadioItem>
       ))}
     </List>
