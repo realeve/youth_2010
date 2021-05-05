@@ -23,7 +23,13 @@ export default function FormComponent({
   showErr,
 }: IPropsForm) {
   return data.map(({ title, data, type = 'radio', subTitle, ...props }: IPaper, key: number) => {
-    let idxTitle = showKey ? `${key + 1}.${title}` : title;
+    let idxTitle = showKey ? (
+      <>
+        {key + 1}.{title}
+      </>
+    ) : (
+      title
+    );
 
     let prop = {
       onChange,

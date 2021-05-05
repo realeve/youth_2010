@@ -13,10 +13,18 @@ function NewPage({ paper: initData, user, dispatch }: any) {
   const [loading, setLoading] = useState(false);
   const [showErr, setShowErr] = useState(initData.length === 0 ? {} : { msg: '' });
 
+  const radioItemRender = (item, idx) => (
+    <div>
+      {idx + 1}. <strong>{item[1]}</strong>
+      <br />
+      <small>{item[0]}</small>
+    </div>
+  );
+
   const [paper, setPaper] = useState([]);
   useEffect(() => {
     db.getCbpcyouth2019Votelist().then(({ data }) => {
-      let res = R.flatten(data).map(name => ({ title: '评委评分 —— ' + name, type: 'textarea' }));
+      let res = data.map((name, idx) => ({ title: radioItemRender(name, idx), type: 'textarea' }));
       setPaper(res);
     });
   }, []);
@@ -51,7 +59,16 @@ function NewPage({ paper: initData, user, dispatch }: any) {
   return (
     <div>
       <div className={styles.content}>
-        <FormComponent data={paper} onChange={setState} state={state} showErr={showErr} />
+        <WingBlank>
+          <h3>评委评分</h3>
+        </WingBlank>
+        <FormComponent
+          data={paper}
+          onChange={setState}
+          state={state}
+          showErr={showErr}
+          showKey={false}
+        />
         <WhiteSpace size="lg" />
       </div>
       <WingBlank>
